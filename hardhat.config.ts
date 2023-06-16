@@ -5,15 +5,18 @@ import * as dotenv from 'dotenv';
 import '@nomiclabs/hardhat-ethers';
 dotenv.config();
 import '@nomiclabs/hardhat-web3';
-require('@openzeppelin/hardhat-upgrades');
+import '@openzeppelin/hardhat-upgrades';
+import "@buildship/hardhat-ipfs-upload";
 
 const baseGoerliUrl = 'https://goerli.infura.io/v3/';
 const baseMainnnetUrl = 'https://mainnet.infura.io/v3/';
 
-/** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
-  solidity: "0.8.19",
-};
+extendEnvironment((env) => {
+  const Web3 = require('web3');
+  env.Web3 = Web3;
+
+  env.web3 = new Web3(env.network.provider);
+});
 
 const networks: { [index: string]: NetworkUserConfig } = {
   hardhat: {
@@ -29,7 +32,14 @@ const networks: { [index: string]: NetworkUserConfig } = {
   goerli: {
     chainId: 5,
     url: `${baseGoerliUrl}${process.env.INFURA_API_KEY}`,
-    accounts:
+    accounts: {
+      mnemonic: process.env.MNEMONIC
+    },
+    gasPrice: 8000000000
+  },
+  buildbear : {
+    url: 'https://rpc.buildbear.io/blushing-ben-quadinaros-e0e43e61',
+    accounts: 
       process.env.PRIVATE_KEY != undefined ? [process.env.PRIVATE_KEY] : []
   }
 };
