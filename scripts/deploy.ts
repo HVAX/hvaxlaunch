@@ -30,7 +30,7 @@ async function main() {
     'hvaxvotercard.json',
     JSON.stringify(artifacts.readArtifactSync('HVAXVoterCard').abi, null, 2)
   );
-  console.log('\nVAXVoterCard ABI available in hvaxvotercard.json ✅');
+  console.log('\nHVAXVoterCard ABI available in hvaxvotercard.json ✅');
 
   const hvaxGovernor = await ethers.getContractFactory("HVAXVoterGovernor");
   const governor = await deployGovernor(hvaxGovernor, card.address);
