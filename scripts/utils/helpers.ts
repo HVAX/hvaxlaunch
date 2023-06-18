@@ -1,4 +1,4 @@
-import hre, { ethers, web3, upgrades } from 'hardhat';
+import hre, { ethers, web3, upgrades, artifacts } from 'hardhat';
 import fs from 'fs';
 import { Artifact } from 'hardhat/types';
 
@@ -9,8 +9,9 @@ export async function deployContract(TokenArtifact: any, ownerAddress: any) : Pr
     return await token.deployed();
   }
   
-  export async function upgradeContract(TokenArtifact: any, tokenAddress: string): Promise<ethers.Contract> {
-    const contract = await upgrades.upgradeProxy(tokenAddress, TokenArtifact);
+  async function upgradeContract(TokenArtifact: any, contractName: string, contractAddress: string) {
+    const deployedContract = await ethers.getContractAt(contractName, contractAddress);
+    const contract = await upgrades.upgradeProxy(deployedContract, TokenArtifact);
     return contract;
   }
 
@@ -26,18 +27,36 @@ export async function deployContract(TokenArtifact: any, ownerAddress: any) : Pr
     return await deployContract(artifact, owner.address);
   }
 
-  export async function changeDeployUpgradeableContract(contractName: string, address: string): Promise<ethers.Contract> {
+  export async function changeDeployUpgradeableContract(contractName: string): Promise<ethers.Contract> {
     const artifact = await ethers.getContractFactory(contractName);
-    const artifactContract = await artifact.deploy();
-    console.log(artifactContract);
-    const owner = await getSignerAccount();
-    console.log(owner.address);
-    return await upgradeContract(artifact, address);
+    const address = readContractAddressFromFile(contractName.toLocaleLowerCase());
+    return await upgradeContract(artifact, contractName, address);
   }
 
-  export function writeArtifactToJson(fileNameWithoutTypeSuffix: string, abi: any): void {
+  export function readContractAddressFromFile(contractName: string) {
+    const jsonString = fs.readFileSync(`${contractName.toLocaleLowerCase()}-address.json`, 'utf-8');
+    const data = JSON.parse(jsonString);
+    return data['Address'];
+  }
+  
+  export async function saveContractMetadata(contractName: string, tokenAddr: string) {
+    const fileName = `${contractName.toLocaleLowerCase()}-address.json`;
+  
     fs.writeFileSync(
-        `${fileNameWithoutTypeSuffix}.json`,
-        JSON.stringify(abi, undefined, 2)
-      );
-}
+      fileName,
+      JSON.stringify(
+        {
+          Address: tokenAddr
+        },
+        undefined,
+        2
+      )
+    );
+  
+    const TokenArtifact = artifacts.readArtifactSync(contractName);
+  
+    fs.writeFileSync(
+      `${contractName.toLocaleLowerCase()}.json`,
+      JSON.stringify(TokenArtifact, null, 2)
+    );
+  }
