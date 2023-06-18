@@ -1,6 +1,7 @@
 import hre, { ethers, web3, upgrades, artifacts } from "hardhat";
 import { Artifact } from 'hardhat/types';
 import fs from 'fs';
+import { getSignerAccount, saveContractMetadata } from "./utils/helpers";
 
 async function deployContract(TokenArtifact: any) {
     const token = await upgrades.deployProxy(TokenArtifact, [], {
@@ -22,15 +23,18 @@ async function main() {
 
   await card.deployed();
 
-  console.log(
-    "HVAXVoterCard contract deployed to:", card.address
-  );
+  console.log("HVAXVoterCard contract deployed to:", card.address);
 
-  fs.writeFileSync(
-    'hvaxvotercard.json',
-    JSON.stringify(artifacts.readArtifactSync('HVAXVoterCard').abi, null, 2)
-  );
+  saveContractMetadata('HVAXVoterCard', card.address);
+
   console.log('\nHVAXVoterCard ABI available in hvaxvotercard.json ✅');
+
+  const signer = await getSignerAccount();
+
+  await card.connect(signer).safeMint(signer.address);
+  const balance = await card.balanceOf(signer.address);
+
+  console.log(`Minted ${balance} to ${signer.address}`);
 
   const hvaxGovernor = await ethers.getContractFactory("HVAXVoterGovernor");
   const governor = await deployGovernor(hvaxGovernor, card.address);
@@ -39,12 +43,8 @@ async function main() {
     "HVAXVoterGovernor contract deployed to:", governor.address
   );
 
-  
-  fs.writeFileSync(
-    'hvaxvotergovernor.json',
-    JSON.stringify(artifacts.readArtifactSync('HVAXVoterGovernor').abi, null, 2)
-  );
-  console.log('\nVAXVoterGovernor ABI available in hvaxvotergovernor.json ✅');
+  saveContractMetadata('HVAXVoterGovernor', governor.address);
+  console.log('\nHVAXVoterGovernor ABI available in hvaxvotergovernor.json ✅');
 }
 
 main().catch((error) => {
