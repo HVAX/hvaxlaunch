@@ -27,7 +27,7 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
         __ERC721Votes_init();
     }
 
-    function safeMint(address to) public onlyOwner {
+    function safeMint(address to) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
