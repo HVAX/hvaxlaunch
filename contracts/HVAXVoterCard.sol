@@ -28,6 +28,9 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
     }
 
     function safeMint(address to) public {
+        uint256 balanceOfRecipient = balanceOf(to);
+        require(balanceOfRecipient <= 0, "User already has a balance");
+
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);

@@ -7,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx hardhat compile",
     "deploy": "npx hardhat run -network goerli scripts/deploy.ts",
-    "deployprod": "npx hardhat run --network mainnet scripts/deploy.ts "
+    "deployprod": "npx hardhat run --network mainnet scripts/deploy.ts ",
+    "upgrade": "npx hardhat run --network goerli scripts/upgrade.ts",
+    "upgradeprod": "npx hardhat run --network mainnet scripts/upgrade.ts",
+    "mint": "npx hardhat run --network goerli scripts/mint.ts"
   },
   "repository": {
     "type": "git",
