@@ -79,4 +79,8 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
     {
         return super.supportsInterface(interfaceId);
     }
+
+    function _transfer(address from, address to, uint256 tokenId) internal virtual override {
+      revert('Not transferrable');
+    }
 }
