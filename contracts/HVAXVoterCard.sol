@@ -38,7 +38,7 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
     }
 
     function _baseURI() internal pure override returns(string memory) {
-        return "https://ipfs.infura.io:5001/";
+        return "https://hvaxipfs.infura-ipfs.io/";
     }
 
     // The following functions are overrides required by Solidity.

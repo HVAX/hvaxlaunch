@@ -16,7 +16,7 @@ contract HVAXVoterGovernor is Initializable, GovernorUpgradeable, GovernorSettin
 
     function initialize(IVotesUpgradeable _token) initializer public {
         __Governor_init("HVAXVoterGovernor");
-        __GovernorSettings_init(3600 /* 12 hour */, 50400 /* 1 week */, 1);
+        __GovernorSettings_init(6 hours, 1 weeks, 1);
         __GovernorCountingSimple_init();
         __GovernorVotes_init(_token);
         __GovernorVotesQuorumFraction_init(4);

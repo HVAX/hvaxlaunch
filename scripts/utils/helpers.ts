@@ -23,6 +23,7 @@ export async function deployContract(TokenArtifact: any, ownerAddress: any) : Pr
 
   export async function initialDeployUpgradeableContract(contractName: string): Promise<ethers.Contract> {
     const artifact = await ethers.getContractFactory(contractName);
+    console.log(artifact);
     const owner = await getSignerAccount();
     return await deployContract(artifact, owner.address);
   }
