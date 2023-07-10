@@ -13,7 +13,7 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _tokenIdCounter;
-    string private baseUri = ""; 
+    string private baseUri; 
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -26,6 +26,7 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
         __Ownable_init();
         __EIP712_init("HVAXVoterCard", "1");
         __ERC721Votes_init();
+        baseUri = "";
     }
 
     function safeMint(address to) public {
