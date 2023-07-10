@@ -11,7 +11,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
 contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgradeable, OwnableUpgradeable, EIP712Upgradeable, ERC721VotesUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
-
+    string private baseURI;
     CountersUpgradeable.Counter private _tokenIdCounter;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -38,7 +38,11 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
     }
 
     function _baseURI() internal pure override returns(string memory) {
-        return "https://hvaxipfs.infura-ipfs.io/";
+        return baseURI;
+    }
+
+    function updateBaseURI(string memory newURI) externaly onlyOwner {
+       baseURI = newURI;
     }
 
     // The following functions are overrides required by Solidity.
