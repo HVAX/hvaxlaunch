@@ -10,7 +10,7 @@ async function main() {
     const owner = await voter.owner();
     console.log(`Owner: ${owner} Signer: ${signer.address}`);
 
-    const testWallets = ["0x71686c9d109AA55abf87Cb0fac7e8B9bB84AD1A7",
+    const testWallets = [signer.address, "0x71686c9d109AA55abf87Cb0fac7e8B9bB84AD1A7",
         "0xeA1398A3363e470d8F68DF94AbB2D375E45f270D",
         "0xA8345d44eEe8c3948496B4031f2Ac3F0ebBA3F89",
         "0xb45aCa2DF8CB7c5cbA7b1AE55a772d666b7dF6bc",
@@ -24,19 +24,27 @@ async function main() {
     // await voter.connect(signer).safeMint(signer.address);
     
 
-    const bal = await voter.balanceOf(signer.address);
-    console.log(`Balance of ${signer.address}: ${bal}`);
+    // const bal = await voter.balanceOf(signer.address);
+    // console.log(`Balance of ${signer.address}: ${bal}`);
 
     for (const wallet of testWallets) {
-        await voter.connect(signer).safeMint(wallet);
-        
-        const walletBal = await voter.balanceOf(wallet);
-        console.log(`Balance of ${wallet}: ${walletBal}`);
+        try {
+            const walletBal = await voter.balanceOf(wallet);
+            
+            if (walletBal.toNumber() > 0) {
+                await voter.connect(signer).safeMint(wallet);
+            } else {
+                console.log(`${wallet} already has a balance of ${walletBal}`);
+            }
+            console.log(`Balance of ${wallet}: ${walletBal}`);
+        } catch (error) {
+            console.error(error);            
+        }
     }
 
     // test no double minting
-    let testTx = await voter.connect(signer).safeMint(testWallets[0]);
-    console.log(`Double mint transaction:\r\n\t ${testTx}`);
+    // let testTx = await voter.connect(signer).safeMint(testWallets[0]);
+    // console.log(`Double mint transaction:\r\n\t ${testTx}`);
 }
 
 main().catch((ex) => {

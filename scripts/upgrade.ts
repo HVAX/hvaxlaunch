@@ -3,6 +3,8 @@ import { changeDeployUpgradeableContract, saveContractMetadata } from './utils/h
 import fs from 'fs';
 
 async function main() {
+  console.log('Upgrading');
+  
   const hvaxCard = await changeDeployUpgradeableContract('HVAXVoterCard');
 
   console.log(

@@ -35,7 +35,8 @@ const networks: { [index: string]: NetworkUserConfig } = {
     accounts: {
       mnemonic: process.env.MNEMONIC
     },
-    gasPrice: 8000000000
+    gasPrice: 8000000000,
+    timeout: 999999
   },
   buildbear : {
     url: 'https://rpc.buildbear.io/blushing-ben-quadinaros-e0e43e61',
