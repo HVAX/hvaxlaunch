@@ -13,6 +13,7 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     CountersUpgradeable.Counter private _tokenIdCounter;
+    string private baseUri = ""; 
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -37,8 +38,12 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
         _setTokenURI(tokenId, tokenURI(tokenId));
     }
 
-    function _baseURI() internal pure override returns(string memory) {
-        return "https://hvaxipfs.infura-ipfs.io/";
+    function setBaseUri(string memory newUri) external onlyOwner {
+        baseUri = newUri;
+    }
+
+    function _baseURI() internal view override returns(string memory) {
+        return baseUri;
     }
 
     // The following functions are overrides required by Solidity.
