@@ -30,7 +30,7 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
 
     function safeMint(address to) public {
         uint256 balanceOfRecipient = balanceOf(to);
-        require(balanceOfRecipient <= 0, "User already has a balance");
+        require(balanceOfRecipient == 0, "User already has a balance");
 
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
@@ -78,5 +78,9 @@ contract HVAXVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorageUpgr
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function _transfer(address from, address to, uint256 tokenId) internal virtual override {
+      revert('Not transferrable');
     }
 }
