@@ -21,17 +21,11 @@ async function main() {
         "0x8CFe1d383CE9337d65E2AA5ea6D2BFf47C7D6Da9",
         "0x9A9FD33439353f8ac338B27B9D48f53da45F84b8"]
 
-    // await voter.connect(signer).safeMint(signer.address);
-    
-
-    // const bal = await voter.balanceOf(signer.address);
-    // console.log(`Balance of ${signer.address}: ${bal}`);
-
     for (const wallet of testWallets) {
         try {
             const walletBal = await voter.balanceOf(wallet);
             
-            if (walletBal.toNumber() > 0) {
+            if (walletBal.toNumber() == 0) {
                 await voter.connect(signer).safeMint(wallet);
             } else {
                 console.log(`${wallet} already has a balance of ${walletBal}`);
@@ -41,10 +35,6 @@ async function main() {
             console.error(error);            
         }
     }
-
-    // test no double minting
-    // let testTx = await voter.connect(signer).safeMint(testWallets[0]);
-    // console.log(`Double mint transaction:\r\n\t ${testTx}`);
 }
 
 main().catch((ex) => {

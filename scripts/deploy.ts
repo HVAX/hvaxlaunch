@@ -23,7 +23,7 @@ async function main() {
 
   await card.deployed();
 
-  console.log("HVAXVoterCard contract deployed to:", card.address);
+  console.log("\nHVAXVoterCard contract deployed to:", card.address);
 
   saveContractMetadata('HVAXVoterCard', card.address);
 
