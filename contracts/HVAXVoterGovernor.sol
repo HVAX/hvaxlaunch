@@ -22,6 +22,17 @@ contract HVAXVoterGovernor is Initializable, GovernorUpgradeable, GovernorSettin
         __GovernorVotesQuorumFraction_init(4);
     }
 
+    // Overrides IERC6372 functions to make the token & governor timestamp-based
+
+    function clock() public view override(GovernorVotesUpgradeable, IGovernorUpgradeable) returns (uint48) {
+        return uint48(block.timestamp);
+    }
+
+    // solhint-disable-next-line func-name-mixedcase
+    function CLOCK_MODE() public pure override(GovernorVotesUpgradeable, IGovernorUpgradeable) returns (string memory) {
+        return "mode=timestamp";
+    }
+
     // The following functions are overrides required by Solidity.
 
     function votingDelay()
