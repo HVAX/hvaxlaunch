@@ -27,7 +27,8 @@ const networks: { [index: string]: NetworkUserConfig } = {
   },
   mainnet: {
     chainId: 1,
-    url: `${baseMainnnetUrl}${process.env.INFURA_API_KEY}`
+    url: `${baseMainnnetUrl}${process.env.INFURA_API_KEY}`,
+    accounts: process.env.PRIVATE_KEY != undefined ? [process.env.PRIVATE_KEY] : []
   },
   goerli: {
     chainId: 5,
