@@ -43,7 +43,18 @@ const networks: { [index: string]: NetworkUserConfig } = {
     url: 'https://rpc.buildbear.io/blushing-ben-quadinaros-e0e43e61',
     accounts: 
       process.env.PRIVATE_KEY != undefined ? [process.env.PRIVATE_KEY] : []
-  }
+  },
+  scrollSepolia: {
+    url: "https://sepolia-rpc.scroll.io/" || "",
+    accounts:
+      process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+  },
+  scrollMainnet: {
+    chainId: 534352,
+    url: "https://rpc.scroll.io/" || "",
+    accounts:
+      process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+  },
 };
 
 const config: HardhatUserConfig = {
