@@ -6,11 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx hardhat compile",
-    "deploy": "npx hardhat run -network goerli scripts/deploy.ts",
+    "deploy": "npx hardhat run -network optimism scripts/deploy.ts",
     "deployprod": "npx hardhat run --network mainnet scripts/deploy.ts ",
-    "upgrade": "npx hardhat run --network goerli scripts/upgrade.ts",
+    "upgrade": "npx hardhat run --network optimism scripts/upgrade.ts",
     "upgradeprod": "npx hardhat run --network mainnet scripts/upgrade.ts",
-    "mint": "npx hardhat run --network goerli scripts/mint.ts"
+    "mint": "npx hardhat run --network optimism scripts/mint.ts"
   },
   "repository": {
     "type": "git",
@@ -30,14 +30,9 @@
     "@openzeppelin/contracts": "^4.9.0",
     "@openzeppelin/contracts-upgradeable": "^4.9.1",
     "@openzeppelin/hardhat-upgrades": "^1.27.0",
+    "depcheck": "^1.4.7",
     "dotenv": "^16.3.1",
     "hardhat": "^2.14.1",
-    "hardhat-ipfs": "^0.0.1",
-    "prettier": "2.8.8",
-    "viem": "^1.0.7",
     "web3": "^1.10.0"
-  },
-  "dependencies": {
-    "@buildship/hardhat-ipfs-upload": "^0.1.3"
   }
 }

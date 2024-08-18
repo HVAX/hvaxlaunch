@@ -6,10 +6,10 @@ import '@nomiclabs/hardhat-ethers';
 dotenv.config();
 import '@nomiclabs/hardhat-web3';
 import '@openzeppelin/hardhat-upgrades';
-import "@buildship/hardhat-ipfs-upload";
 
 const baseGoerliUrl = 'https://goerli.infura.io/v3/';
 const baseMainnnetUrl = 'https://mainnet.infura.io/v3/';
+const baseOptimismUrl = 'https://optimism-mainnet.infura.io/v3/'
 
 extendEnvironment((env) => {
   const Web3 = require('web3');
@@ -30,14 +30,10 @@ const networks: { [index: string]: NetworkUserConfig } = {
     url: `${baseMainnnetUrl}${process.env.INFURA_API_KEY}`,
     accounts: process.env.PRIVATE_KEY != undefined ? [process.env.PRIVATE_KEY] : []
   },
-  goerli: {
-    chainId: 5,
-    url: `${baseGoerliUrl}${process.env.INFURA_API_KEY}`,
-    accounts: {
-      mnemonic: process.env.MNEMONIC
-    },
-    gasPrice: 8000000000,
-    timeout: 999999
+  optimism: {
+    chainId: 10,
+    url: `${baseOptimismUrl}${process.env.INFURA_API_KEY}`,
+    accounts: process.env.PRIVATE_KEY != undefined ? [process.env.PRIVATE_KEY] : []
   },
   buildbear : {
     url: 'https://rpc.buildbear.io/blushing-ben-quadinaros-e0e43e61',
@@ -65,11 +61,11 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       mainnet: process.env.ETHERSCAN_API_KEY || '',
-      goerli: process.env.ETHERSCAN_API_KEY || ''
+      optimisticEthereum : process.env.OPTIMISM_ETHERSCAN_API_KEY || '',
     }
   },
   networks: networks,
-  defaultNetwork: 'goerli'
+  defaultNetwork: 'optimism'
 };
 
 export default config;
