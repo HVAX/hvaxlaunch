@@ -15,6 +15,8 @@ contract HVAXAgentVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorag
     CountersUpgradeable.Counter private _tokenIdCounter;
     string private baseUri; 
 
+    mapping(address => bool) public minters;
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -27,9 +29,30 @@ contract HVAXAgentVoterCard is Initializable, ERC721Upgradeable, ERC721URIStorag
         __EIP712_init("HVAXAgentVoterCard", "1");
         __ERC721Votes_init();
         baseUri = "";
+        minters[msg.sender] = true;
     }
 
-    function safeMint(address to) public onlyOwner {
+    modifier onlyMinters() {
+        require(minters[msg.sender], "Caller is not an admin");
+        _;
+    }
+
+    function addMinter(address minter) external onlyOwner {
+        require(minter != address(0), "Invalid address");
+        minters[minter] = true;
+    }
+
+    function removeMinter(address minter) external onlyOwner {
+        require(minter != address(0), "Invalid address");
+        require(minters[minter], "Address is not an admin");
+        minters[minter] = false;
+    }
+
+    function isMinter(address account) external view returns (bool) {
+        return minters[account];
+    }
+
+    function safeMint(address to) public onlyMinters() {
         uint256 balanceOfRecipient = balanceOf(to);
         require(balanceOfRecipient == 0, "User already has a balance");
 
